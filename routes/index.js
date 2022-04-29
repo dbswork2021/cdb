@@ -9,9 +9,9 @@ module.exports = (app) => {
   app.use('/api/admin', adminRoutes);
   app.use('/api/common', commonRoutes);
 
-  /* app.use(async (err, req, res, next) => {
+  app.use(async (err, req, res, next) => {
     res.status(err.statusCode).send({
       message: err.message,
     });
-  }); */
+  });
 };
