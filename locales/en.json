@@ -4,5 +4,8 @@
 	"phone_not_exists": "phone_not_exists",
 	"reg_fail": "reg_fail",
 	"reg_success": "reg_success",
-	"ref_not_exists": "ref_not_exists"
+	"ref_not_exists": "ref_not_exists",
+	"user_ban": "user_ban",
+	"passwd_error": "passwd_error",
+	"welcom_back": "welcom_back"
 }

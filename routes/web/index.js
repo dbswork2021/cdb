@@ -20,6 +20,7 @@ webRoutes.post('/login', async (req, res) => {
 	assert(verify.code.toLowerCase() === phoneCode.toLowerCase(), 422, res__('verify_error')) */
   const user = await userSchema.findOne({ phone }).select('+passwd');
   assert(user, 422, res.__('phone_not_exists'));
+	assert(user.state, 422, res.__('user_ban'));
   assert(bcrypt.compareSync(passwd, user.passwd), 422, res.__('passwd_error'));
   const token = jwt.sign({ id: user._id, name: user.username, role: 1 }, SECRET, {
     expiresIn: '1d',
