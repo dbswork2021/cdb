@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkweb=self.webpackChunkweb||[]).push([[823],{2438:function(e,n,u){u.r(n);var r=u(184);n.default=function(){return(0,r.jsx)("div",{children:"Share"})}}}]);
+//# sourceMappingURL=823.8dc4812c.chunk.js.map

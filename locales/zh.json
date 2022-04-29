@@ -1,0 +1,12 @@
+{
+	"phone_exists": "用户已存在",
+	"phone_not_exists": "用户不存在",
+	"ref_not_exists": "推荐人不存在",
+	"verify_error": "验证码错误",
+	"passwd_error": "密码错误",
+	"welcom_back": "登陆成功，欢迎回来",
+	"reg_fail": "注册失败，请重新注册",
+	"reg_success": "注册成功",
+	"input_error": "请检查输入项不能为空",
+	"re_login": "登陆过期，请重新登陆"
+}

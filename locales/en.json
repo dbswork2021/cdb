@@ -1,0 +1,8 @@
+{
+	"phone_exists": "user is exists",
+	"re_login": "re_login",
+	"phone_not_exists": "phone_not_exists",
+	"reg_fail": "reg_fail",
+	"reg_success": "reg_success",
+	"ref_not_exists": "ref_not_exists"
+}
