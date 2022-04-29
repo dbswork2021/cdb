@@ -12,7 +12,6 @@ const productRoutes = require('./product')
 
 routes.post('/login', async (req, res) => {
   const { username, passwd, captchaCode } = req.body;
-	console.log(req.headers);
 	
   const oldToken = String(req.headers.authorization || '').replace('Bearer ','')
 	assert(oldToken, 422, "缺少凭证")

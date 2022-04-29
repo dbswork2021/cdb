@@ -23,11 +23,14 @@ userRoutes.delete('/:id', async (req, res) => {
 });
 
 userRoutes.post('/', async (req, res) => {
-  console.log(req.body);
+	const {id, nick, blance, money = 0} = req.body
+	const result = await userSchema.findByIdAndUpdate(id, {
+			nick,
+			blance: blance + money
+		},{new: true})
+
+	res.send(result)
 });
 
-userRoutes.put('/', async (req, res) => {
-  console.log(req.body);
-});
 
 module.exports = userRoutes;
