@@ -18,7 +18,8 @@ utils.post('/sms', (req, res) => {
 })
 
 utils.post('/uploads', auth, upload.single('file'), async (req, res) => {
-	res.send(req.file.path)
+	
+	res.send(req.file.filename)
 	
 })
 

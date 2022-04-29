@@ -4,7 +4,7 @@ const webRoutes = require('./web');
 const adminRoutes = require('./admin');
 
 module.exports = (app) => {
-	app.use('/public', static(__dirname + '/../public'))
+	app.use('/', static(__dirname + '/../public'))
   app.use('/api/web', webRoutes);
   app.use('/api/admin', adminRoutes);
   app.use('/api/common', commonRoutes);
