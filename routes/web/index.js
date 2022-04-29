@@ -44,8 +44,9 @@ webRoutes.post('/register', async (req, res) => {
     const refUser = await userSchema.findOne({ phone: referrer });
     assert(refUser, 401, res.__('ref_not_exists'));
     userModel.referrer = refUser._id;
+		await userSchema.findByIdAndUpdate(refUser._id,{$inc: {inferior: 1}})
   }
-  const newUser = await userSchema.create(userModel);
+	const newUser = await userSchema.create(userModel);
   assert(newUser, 422,res.__('reg_fail'));
   const token = jwt.sign({ id: newUser._id, name: newUser.username , role: 1}, SECRET, {
     expiresIn: '1d',
