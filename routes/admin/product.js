@@ -1,5 +1,6 @@
 const productRoutes = require('express').Router();
 const productSchema = require('../../models/Product');
+const tridingSchema = require('../../models/Triding')
 
 productRoutes.get('/', async (req, res) => {
   const result = await productSchema.find();
@@ -22,5 +23,13 @@ productRoutes.delete('/:id', async (req, res) => {
  const test =  await productSchema.findByIdAndDelete(req.params.id);
   res.send({ message: '删除成功' });
 });
+
+
+productRoutes.get('/record', async (req, res) => {
+	const result = await tridingSchema.find().populate('product', {name: 1}).populate('user', {phone: 1})
+	console.log(result);
+	
+	res.send(result)
+})
 
 module.exports = productRoutes;

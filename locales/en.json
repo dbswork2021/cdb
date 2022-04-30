@@ -7,5 +7,7 @@
 	"ref_not_exists": "ref_not_exists",
 	"user_ban": "user_ban",
 	"passwd_error": "passwd_error",
-	"welcom_back": "welcom_back"
+	"welcom_back": "welcom_back",
+	"blance_not_enough": "blance_not_enough",
+	"triding_done": "triding_done"
 }

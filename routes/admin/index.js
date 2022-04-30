@@ -9,6 +9,7 @@ const auth = require('../../utils/auth')
 const userRoutes = require('./user')
 const infoRoutes = require('./info')
 const productRoutes = require('./product')
+const priceRoutes = require('./price')
 
 routes.post('/login', async (req, res) => {
   const { username, passwd, captchaCode } = req.body;
@@ -38,5 +39,6 @@ routes.post('/register', async (req, res) => {
 routes.use('/user', auth, userRoutes)
 routes.use('/info', auth, infoRoutes)
 routes.use('/product', auth, productRoutes)
+routes.use('/price', auth, priceRoutes)
 
 module.exports = routes;

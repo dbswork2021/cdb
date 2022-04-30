@@ -10,6 +10,7 @@ const bcrypt = require('bcryptjs');
 const auth = require('../../utils/auth')
 const userRoutes = require('./user')
 const infoRoutes = require('./info')
+const productRoutes = require('./product')
 
 
 webRoutes.post('/login', async (req, res) => {
@@ -63,5 +64,6 @@ webRoutes.get('/index', async(req, res) => {
 
 webRoutes.use('/user', auth, userRoutes)
 webRoutes.use('/info', auth, infoRoutes)
+webRoutes.use('/product', auth, productRoutes)
 
 module.exports = webRoutes;

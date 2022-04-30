@@ -9,5 +9,7 @@
 	"reg_success": "注册成功",
 	"input_error": "请检查输入项不能为空",
 	"re_login": "登陆过期，请重新登陆",
-	"user_ban": "您已被封禁，请联系管理员解封"
+	"user_ban": "您已被封禁，请联系管理员解封",
+	"blance_not_enough": "余额不足",
+	"triding_done": "租赁成功"
 }
