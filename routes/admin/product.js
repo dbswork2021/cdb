@@ -27,8 +27,6 @@ productRoutes.delete('/:id', async (req, res) => {
 
 productRoutes.get('/record', async (req, res) => {
 	const result = await tridingSchema.find().populate('product', {name: 1}).populate('user', {phone: 1})
-	console.log(result);
-	
 	res.send(result)
 })
 

@@ -29,7 +29,15 @@ const schema = new mongoose.Schema({
 		type: Number,
 		default: 0
 	},
+	income: {
+		type: Number,
+		default: 0
+	},
 	blance: {
+		type: Number,
+		default: 0
+	},
+	withdraw: {
 		type: Number,
 		default: 0
 	},
