@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({
 	imageUrl: String,
-	bgUrl: String,
+	notes: Array,
 	rules: Array
 },{
 	versionKey: false,
