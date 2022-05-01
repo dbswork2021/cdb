@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/305.e88025ea.chunk.js","mappings":"mHASA,UARiB,WAChB,OACC","sources":["pages/Withdraw.jsx"],"sourcesContent":["\nconst Withdraw = () => {\n\treturn (\n\t\t<div>\n\t\t\t提现\n\t\t</div>\n\t)\n}\n\nexport default Withdraw\n"],"names":[],"sourceRoot":""}

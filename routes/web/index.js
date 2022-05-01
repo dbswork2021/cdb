@@ -14,6 +14,7 @@ const productRoutes = require('./product')
 
 
 webRoutes.post('/login', async (req, res) => {
+	
   const { phone, passwd } = req.body;
   /* const oldToken = String(req.headers.authorization || '').replace('Bearer ','')
 	assert(oldToken, 422, "缺少凭证")

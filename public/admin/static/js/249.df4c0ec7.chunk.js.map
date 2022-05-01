@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/249.df4c0ec7.chunk.js","mappings":"mHASA,UARY,WACX,OACC","sources":["pages/Sms.jsx"],"sourcesContent":["\nconst Sms = () => {\n\treturn (\n\t\t<div>\n\t\t\t短信\n\t\t</div>\n\t)\n}\n\nexport default Sms\n"],"names":[],"sourceRoot":""}
