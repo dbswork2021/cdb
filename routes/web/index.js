@@ -52,7 +52,7 @@ webRoutes.post('/register', async (req, res) => {
   }
 	const newUser = await userSchema.create(userModel);
   assert(newUser, 422,res.__('reg_fail'));
-  const token = jwt.sign({ id: newUser._id, name: newUser.username , withdrawCount: user.withdrawCount}, SECRET, {
+  const token = jwt.sign({ id: newUser._id, name: newUser.nick , withdrawCount: user.withdrawCount}, SECRET, {
     expiresIn: '1d',
   });
   res.send({ message: res.__('reg_success'), token });

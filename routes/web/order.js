@@ -76,12 +76,8 @@ orderRoutes.post('/recharge', async (req, res) => {
 
 orderRoutes.get('/withdraw', async (req, res) => {
 	const withdrawSets = await setSchema.findOne({type: 'withdraw'})
-	const countIsEnlaugh = req.user.withdrawCount > withdrawSets.sets.get('count')
+	const countIsEnlaugh = req.user.withdrawCount < withdrawSets.sets.get('count')
 	assert(countIsEnlaugh, 422, res.__('test'))
-	console.log(req.user.withdrawCount > withdrawSets.sets.get('count'));
-	console.log(req.user);
-	
-	
 	
 })
 
