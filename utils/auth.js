@@ -9,15 +9,9 @@ module.exports = async (req, res, next) => {
     try {
 			req.user = jwt.verify(token, SECRET)
     } catch (error) {
-      ctx.assert(false, 401, res.__('re_login'));
+      assert(false, 401, res.__('re_login'));
     }
 	assert(req.user, 401, res.__('re_login'))
-	
-	if(req.baseUrl.indexOf('admin') >= 0){
-		if(req.user.role !== 10) {
-			assert(false, 401, res.__('re_login'))
-		}
-	}
 
 	await next()
 }

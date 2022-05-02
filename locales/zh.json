@@ -11,5 +11,6 @@
 	"re_login": "登陆过期，请重新登陆",
 	"user_ban": "您已被封禁，请联系管理员解封",
 	"blance_not_enough": "余额不足",
-	"triding_done": "租赁成功"
+	"triding_done": "租赁成功",
+	"test": "test"
 }

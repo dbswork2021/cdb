@@ -1,3 +1,4 @@
+// 财务明细
 const mongoose = require('mongoose');
 
 const schema = new mongoose.Schema(

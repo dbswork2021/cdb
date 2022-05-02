@@ -17,9 +17,14 @@ userRoutes.get('/:id', async (req, res) => {
 });
 
 userRoutes.delete('/:id', async (req, res) => {
-  console.log(req.params.id);
-	await userSchema.findOneAndDelete(req.params.id)
-	res.send({message: '删除成功'})
+	const operateUser = await userSchema.findById(req.params.id)
+	if(operateUser.idDel === 1){
+		await userSchema.findOneAndUpdate(req.params.id, {isDel: 0})
+	}else{
+		await userSchema.findOneAndUpdate(req.params.id, {isDel: 1})
+	}
+	res.send({message: '操作成功'})
+
 });
 
 userRoutes.post('/', async (req, res) => {

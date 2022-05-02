@@ -21,6 +21,13 @@ utils.post('/uploads', auth, upload.single('file'), async (req, res) => {
 	res.send(req.file.filename)
 })
 
+utils.post('/notify', async (req, res) => {
+	console.log("充值回调通知");
+	
+	console.log(req.body);
+	res.send("success")
+})
+
 
 
 module.exports = utils

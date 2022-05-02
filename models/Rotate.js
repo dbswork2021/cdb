@@ -1,3 +1,4 @@
+// 首页横幅
 const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema({

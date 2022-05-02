@@ -11,6 +11,7 @@ const auth = require('../../utils/auth')
 const userRoutes = require('./user')
 const infoRoutes = require('./info')
 const productRoutes = require('./product')
+const orderRoutes = require('./order')
 
 
 webRoutes.post('/login', async (req, res) => {
@@ -24,7 +25,7 @@ webRoutes.post('/login', async (req, res) => {
   assert(user, 422, res.__('phone_not_exists'));
 	assert(user.state, 422, res.__('user_ban'));
   assert(bcrypt.compareSync(passwd, user.passwd), 422, res.__('passwd_error'));
-  const token = jwt.sign({ id: user._id, name: user.username, role: 1 }, SECRET, {
+  const token = jwt.sign({ id: user._id, name: user.username, withdrawCount: user.withdrawCount }, SECRET, {
     expiresIn: '1d',
   });
   res.send({ message:res.__('welcom_back'), token });
@@ -51,7 +52,7 @@ webRoutes.post('/register', async (req, res) => {
   }
 	const newUser = await userSchema.create(userModel);
   assert(newUser, 422,res.__('reg_fail'));
-  const token = jwt.sign({ id: newUser._id, name: newUser.username , role: 1}, SECRET, {
+  const token = jwt.sign({ id: newUser._id, name: newUser.username , withdrawCount: user.withdrawCount}, SECRET, {
     expiresIn: '1d',
   });
   res.send({ message: res.__('reg_success'), token });
@@ -66,5 +67,6 @@ webRoutes.get('/index', async(req, res) => {
 webRoutes.use('/user', auth, userRoutes)
 webRoutes.use('/info', auth, infoRoutes)
 webRoutes.use('/product', auth, productRoutes)
+webRoutes.use('/order', auth, orderRoutes)
 
 module.exports = webRoutes;

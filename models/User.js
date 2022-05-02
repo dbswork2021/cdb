@@ -41,6 +41,10 @@ const schema = new mongoose.Schema({
 		type: Number,
 		default: 0
 	},
+	withdrawCount: {
+		type: Number,
+		default: 0
+	},
 	freeze: {
 		type: Number,
 		default: 0
@@ -48,6 +52,10 @@ const schema = new mongoose.Schema({
 	state: {
 		type: Number,
 		default: 1
+	},
+	isDel: {
+		type: Number,
+		default: 0
 	}
 },{
 		timestamps: true,

@@ -1,6 +1,5 @@
 module.exports = {
 	PORT: 8000,
-	SESSION: 'mceijkaerjfajhie',
 	SECRET: 'xiaosanyyds',
 	DB: {
 		PORT: 27017,
@@ -8,5 +7,5 @@ module.exports = {
 		NAME: 'test',
 		USER: 'test',
 		PWD: '123456'
-	}
+	},
 }
