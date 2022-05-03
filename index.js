@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const bodyParser = require('body-parser')
 const i18n = require('i18n');
 const { PORT } = require('./config');
 
@@ -17,6 +18,7 @@ app.use(
     origin: ['http://localhost:3000', 'http://localhost:3001'],
   })
 );
+app.use(bodyParser.urlencoded({extended: false}))
 app.use(express.json());
 app.use(i18n.init);
 

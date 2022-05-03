@@ -57,6 +57,7 @@ utils.post('/uploads', auth, upload.single('file'), async (req, res) => {
 utils.post('/notify', async (req, res) => {
 	console.log("充值回调通知");
 	
+	console.log(req)
 	console.log(req.body);
 	res.send("success")
 })
