@@ -11,7 +11,7 @@ module.exports = async (req, res, next) => {
     } catch (error) {
       assert(false, 401, res.__('re_login'));
     }
-	assert(req.user, 401, res.__('re_login'))
+	assert(req.user.id, 401, res.__('re_login'))
 
 	await next()
 }
