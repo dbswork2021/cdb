@@ -1,11 +1,10 @@
 const orderRoutes = require('express').Router();
-const assert = require('http-assert')
+const assert = require('http-assert');
 const orderSchema = require('../../models/Order');
-const setSchema = require('../../models/Set')
+const setSchema = require('../../models/Set');
 const axios = require('axios');
 const qs = require('querystring');
 const md5 = require('md5');
-
 
 orderRoutes.post('/recharge', async (req, res) => {
   const orderInfo = await orderSchema.create({
@@ -18,7 +17,7 @@ orderRoutes.post('/recharge', async (req, res) => {
     .slice(1, 20);
   const mchOrderId = JSON.stringify(orderInfo._id).replace(/"/g, '');
 
-	const setResult = await setSchema.findOne({type: 'pay'})
+  const setResult = await setSchema.findOne({ type: 'pay' });
 
   const signStr =
     'goods_name=' +
@@ -31,7 +30,9 @@ orderRoutes.post('/recharge', async (req, res) => {
     setResult.sets.get('notifyUrl') +
     '&order_date=' +
     date +
-    '&pay_type=300&trade_amount=' +
+    '&pay_type=' +
+    setResult.sets.get('payType') +
+    '&trade_amount=' +
     orderInfo.amount +
     '&version=1.0&key=' +
     setResult.sets.get('payKey');
@@ -51,15 +52,11 @@ orderRoutes.post('/recharge', async (req, res) => {
     sign: sign,
   });
 
-  const result = await axios.post(
-    setResult.sets.get('payApiUrl'),
-    pdata,
-    {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
-      },
-    }
-  );
+  const result = await axios.post(setResult.sets.get('payApiUrl'), pdata, {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
+    },
+  });
 
   if (result.data.respCode === 'SUCCESS') {
     if (result.data.tradeResult === '1') {
@@ -75,10 +72,10 @@ orderRoutes.post('/recharge', async (req, res) => {
 });
 
 orderRoutes.get('/withdraw', async (req, res) => {
-	const withdrawSets = await setSchema.findOne({type: 'withdraw'})
-	const countIsEnlaugh = req.user.withdrawCount < withdrawSets.sets.get('count')
-	assert(countIsEnlaugh, 422, res.__('test'))
-	
-})
+  const withdrawSets = await setSchema.findOne({ type: 'withdraw' });
+  const countIsEnlaugh =
+    req.user.withdrawCount < withdrawSets.sets.get('count');
+  assert(countIsEnlaugh, 422, res.__('test'));
+});
 
 module.exports = orderRoutes;
