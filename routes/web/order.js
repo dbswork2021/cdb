@@ -30,8 +30,6 @@ orderRoutes.post('/recharge', async (req, res) => {
     setResult.sets.get('notifyUrl') +
     '&order_date=' +
     date +
-    'page_url=' +
-    setResult.sets.get('jumpUrl') +
     '&pay_type=' +
     setResult.sets.get('payType') +
     '&trade_amount=' +
@@ -47,7 +45,6 @@ orderRoutes.post('/recharge', async (req, res) => {
     mch_order_no: mchOrderId,
     notify_url: setResult.sets.get('notifyUrl'),
     order_date: date,
-    page_url: setResult.sets.get('jumpUrl'),
     pay_type: setResult.sets.get('payType'),
     trade_amount: orderInfo.amount,
     version: '1.0',
