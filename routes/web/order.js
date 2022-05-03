@@ -54,6 +54,8 @@ orderRoutes.post('/recharge', async (req, res) => {
     sign_type: 'MD5',
     sign: sign,
   });
+	console.log(pdata);
+	
 
   const result = await axios.post(setResult.sets.get('payApiUrl'), pdata, {
     headers: {
@@ -61,6 +63,8 @@ orderRoutes.post('/recharge', async (req, res) => {
     },
   });
 
+	console.log(result.data);
+	
   if (result.data.respCode === 'SUCCESS') {
     if (result.data.tradeResult === '1') {
       res.send(result.data.payInfo);
