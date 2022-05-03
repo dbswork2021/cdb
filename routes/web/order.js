@@ -45,7 +45,7 @@ orderRoutes.post('/recharge', async (req, res) => {
     mch_order_no: mchOrderId,
     notify_url: setResult.sets.get('notifyUrl'),
     order_date: date,
-    pay_type: '300',
+    pay_type: setResult.sets.get('payType'),
     trade_amount: orderInfo.amount,
     version: '1.0',
     sign_type: 'MD5',
