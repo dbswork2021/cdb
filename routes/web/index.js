@@ -17,10 +17,6 @@ const orderRoutes = require('./order')
 webRoutes.post('/login', async (req, res) => {
 	
   const { phone, passwd } = req.body;
-  /* const oldToken = String(req.headers.authorization || '').replace('Bearer ','')
-	assert(oldToken, 422, "缺少凭证")
-	const verify = jwt.verify(oldToken, SECRET)
-	assert(verify.code.toLowerCase() === phoneCode.toLowerCase(), 422, res__('verify_error')) */
   const user = await userSchema.findOne({ phone }).select('+passwd');
   assert(user, 422, res.__('phone_not_exists'));
 	assert(user.state, 422, res.__('user_ban'));
@@ -31,28 +27,39 @@ webRoutes.post('/login', async (req, res) => {
   res.send({ message:res.__('welcom_back'), token });
 });
 
-webRoutes.post('/register', async (req, res) => {
+webRoutes.post('/register',async(req, res, next) => {
+	const token = req.headers.authorization ? req.headers.authorization.replace(/^Bearer /,'') : null
+	assert(token, 422, res.__('1'))
+    try {
+			req.sms = jwt.verify(token, SECRET)
+    } catch (error) {
+      assert(false, 422, res.__('2'));
+    }
+	assert(req.sms, 401, res.__('3'))
+	next()
+}, async (req, res) => {
   const { nick, phone, passwd, phoneCode, referrer } = req.body;
-	if(nick === '' || phone === '' || passwd === ''){
+		
+	if(nick === '' || phone === '' || passwd === '' || phoneCode === ''){
 		assert(false, 422, res.__('input_error'))
 	}
   let userModel = {
+			nick,
     phone,
     passwd,
   };
-  // assert(phoneCode === SECRET, 422, '安全码错误');
+  assert(phoneCode === req.sms.code, 422, res.__('verify_error'));
   const existstUser = await userSchema.findOne({ phone });
-	
   assert(!existstUser, 422, res.__('phone_exists'));
   if (referrer != '') {
     const refUser = await userSchema.findOne({ phone: referrer });
-    assert(refUser, 401, res.__('ref_not_exists'));
+    assert(refUser, 422, res.__('ref_not_exists'));
     userModel.referrer = refUser._id;
 		await userSchema.findByIdAndUpdate(refUser._id,{$inc: {inferior: 1}})
   }
 	const newUser = await userSchema.create(userModel);
   assert(newUser, 422,res.__('reg_fail'));
-  const token = jwt.sign({ id: newUser._id, name: newUser.nick , withdrawCount: user.withdrawCount}, SECRET, {
+  const token = jwt.sign({ id: newUser._id, name: newUser.nick , withdrawCount: newUser.withdrawCount}, SECRET, {
     expiresIn: '1d',
   });
   res.send({ message: res.__('reg_success'), token });

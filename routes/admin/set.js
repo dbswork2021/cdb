@@ -9,8 +9,6 @@ setRoutes.get('/:type', async (req, res) => {
 setRoutes.post('/', async (req, res) => {
 	
 	if(req.body._id){
-		console.log(req.body);
-		
 		await setSchema.findByIdAndUpdate(req.body._id, req.body)
 	}else{
 		await setSchema.create(req.body)

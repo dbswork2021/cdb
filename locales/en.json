@@ -1,4 +1,6 @@
 {
+	"1": "1",
+	"3": "3",
 	"phone_exists": "user is exists",
 	"re_login": "re_login",
 	"phone_not_exists": "phone_not_exists",
@@ -9,5 +11,7 @@
 	"passwd_error": "passwd_error",
 	"welcom_back": "welcom_back",
 	"blance_not_enough": "blance_not_enough",
-	"triding_done": "triding_done"
+	"triding_done": "triding_done",
+	"sms_code_fail": "sms_code_fail",
+	"input_error": "input_error"
 }

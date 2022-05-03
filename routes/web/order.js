@@ -52,7 +52,7 @@ orderRoutes.post('/recharge', async (req, res) => {
   });
 
   const result = await axios.post(
-    'https://interface.sskking.com/pay/web',
+    setResult.sets.get('payApiUrl'),
     pdata,
     {
       headers: {
