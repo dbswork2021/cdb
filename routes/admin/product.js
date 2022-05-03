@@ -20,7 +20,7 @@ productRoutes.post('/', async (req, res) => {
 
 productRoutes.delete('/:id', async (req, res) => {
 	
- const test =  await productSchema.findByIdAndDelete(req.params.id);
+ await productSchema.findByIdAndDelete(req.params.id);
   res.send({ message: '删除成功' });
 });
 

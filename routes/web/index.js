@@ -29,13 +29,13 @@ webRoutes.post('/login', async (req, res) => {
 
 webRoutes.post('/register',async(req, res, next) => {
 	const token = req.headers.authorization ? req.headers.authorization.replace(/^Bearer /,'') : null
-	assert(token, 422, res.__('1'))
+	assert(token, 422, res.__('verify_not_exist'))
     try {
 			req.sms = jwt.verify(token, SECRET)
     } catch (error) {
-      assert(false, 422, res.__('2'));
+      assert(false, 422, res.__('verify_not_exist'));
     }
-	assert(req.sms, 401, res.__('3'))
+	assert(req.sms, 401, res.__('verify_not_exist'))
 	next()
 }, async (req, res) => {
   const { nick, phone, passwd, phoneCode, referrer } = req.body;

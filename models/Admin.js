@@ -11,8 +11,10 @@ const schema = new mongoose.Schema(
        return require('bcryptjs').hashSync(val, 10);
       },
     },
+		permissions: {type: Number, default: 1}
   },
   {
+
     versionKey: false,
   }
 );
