@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken')
 const { SECRET } = require('../../config')
 const auth = require('../../utils/auth')
 const setSchema = require('../../models/Set')
+const orderSchema = require('../../models/Order');
+const userSchema = require('../../models/User')
 const md5 = require('md5')
 const axios = require('axios')
 const assert = require('http-assert')
@@ -55,9 +57,10 @@ utils.post('/uploads', auth, upload.single('file'), async (req, res) => {
 })
 
 utils.post('/notify', async (req, res) => {
-	console.log("充值回调通知");
-	
-	console.log(req)
+	if(req.body.tradeResult === '1'){
+		const orderInfo = await orderSchema.findByIdAndUpdate(req.body.mchOrderNo, {oriAmount: req.body.amount, status: 1}, {new: true})
+		await userSchema.findByIdAndUpdate(orderInfo.user,{$inc:{blance: orderInfo.oriAmount}})
+	}
 	console.log(req.body);
 	res.send("success")
 })
