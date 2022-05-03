@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/admin/static/css/main.dd0c1138.css",
-    "main.js": "/admin/static/js/main.d53c565d.js",
+    "main.js": "/admin/static/js/main.f2c8ceac.js",
     "static/js/533.b319d28f.chunk.js": "/admin/static/js/533.b319d28f.chunk.js",
     "static/js/485.100a8972.chunk.js": "/admin/static/js/485.100a8972.chunk.js",
     "static/js/180.0f5352fe.chunk.js": "/admin/static/js/180.0f5352fe.chunk.js",
@@ -23,7 +23,7 @@
     "static/js/455.3742f666.chunk.js": "/admin/static/js/455.3742f666.chunk.js",
     "static/js/601.865c0301.chunk.js": "/admin/static/js/601.865c0301.chunk.js",
     "static/js/790.65803d81.chunk.js": "/admin/static/js/790.65803d81.chunk.js",
-    "static/js/643.4b774a0d.chunk.js": "/admin/static/js/643.4b774a0d.chunk.js",
+    "static/js/643.176d35f0.chunk.js": "/admin/static/js/643.176d35f0.chunk.js",
     "static/js/493.10e589f8.chunk.js": "/admin/static/js/493.10e589f8.chunk.js",
     "static/js/728.27ca7ff4.chunk.js": "/admin/static/js/728.27ca7ff4.chunk.js",
     "static/js/837.7655413e.chunk.js": "/admin/static/js/837.7655413e.chunk.js",
@@ -38,7 +38,7 @@
     "static/media/workflow-logo.svg": "/admin/static/media/workflow-logo.72acfb4dee7f07bab93a726a31d2e14a.svg",
     "index.html": "/admin/index.html",
     "main.dd0c1138.css.map": "/admin/static/css/main.dd0c1138.css.map",
-    "main.d53c565d.js.map": "/admin/static/js/main.d53c565d.js.map",
+    "main.f2c8ceac.js.map": "/admin/static/js/main.f2c8ceac.js.map",
     "533.b319d28f.chunk.js.map": "/admin/static/js/533.b319d28f.chunk.js.map",
     "485.100a8972.chunk.js.map": "/admin/static/js/485.100a8972.chunk.js.map",
     "180.0f5352fe.chunk.js.map": "/admin/static/js/180.0f5352fe.chunk.js.map",
@@ -60,7 +60,7 @@
     "455.3742f666.chunk.js.map": "/admin/static/js/455.3742f666.chunk.js.map",
     "601.865c0301.chunk.js.map": "/admin/static/js/601.865c0301.chunk.js.map",
     "790.65803d81.chunk.js.map": "/admin/static/js/790.65803d81.chunk.js.map",
-    "643.4b774a0d.chunk.js.map": "/admin/static/js/643.4b774a0d.chunk.js.map",
+    "643.176d35f0.chunk.js.map": "/admin/static/js/643.176d35f0.chunk.js.map",
     "493.10e589f8.chunk.js.map": "/admin/static/js/493.10e589f8.chunk.js.map",
     "728.27ca7ff4.chunk.js.map": "/admin/static/js/728.27ca7ff4.chunk.js.map",
     "837.7655413e.chunk.js.map": "/admin/static/js/837.7655413e.chunk.js.map",
@@ -75,6 +75,6 @@
   },
   "entrypoints": [
     "static/css/main.dd0c1138.css",
-    "static/js/main.d53c565d.js"
+    "static/js/main.f2c8ceac.js"
   ]
 }
