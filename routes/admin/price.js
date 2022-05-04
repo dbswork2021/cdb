@@ -1,7 +1,12 @@
 const priceRoutes = require('express').Router();
+const qs = require('querystring');
 const recordSchema = require('../../models/Record');
 const orderSchema = require('../../models/Order');
 const withdrawSchema = require('../../models/Withdraw');
+const setSchema = require('../../models/Set')
+
+const md5 = require('md5')
+const axios = require('axios')
 
 priceRoutes.get('/financial', async (req, res) => {
   const result = await recordSchema.find().populate('user', { phone: 1 });
@@ -37,7 +42,7 @@ priceRoutes.post('/withdraw', async (req, res) => {
     '&mch_id=' +
     setResult.sets.get('payId') +
     '&mch_transferId=' +
-    orderInfo._id +
+    mchOrderId +
     '&receive_account=' +
     orderInfo.bankInfo.bankAccount +
     '&receive_name=' +
@@ -46,6 +51,7 @@ priceRoutes.post('/withdraw', async (req, res) => {
     orderInfo.blance +
     '&key=' +
     setResult.sets.get('transferKey');
+
 console.log(signStr);
 
   const sign = md5(signStr);
@@ -55,7 +61,7 @@ console.log(signStr);
     back_url: setResult.sets.get('backUrl'),
     bank_code: orderInfo.bankInfo.bank.code,
     mch_id: setResult.sets.get('payId'),
-    mch_transferId: orderInfo._id,
+    mch_transferId: mchOrderId,
     receive_account: orderInfo.bankInfo.bankAccount,
     receive_name: orderInfo.bankInfo.name,
     transfer_amount: orderInfo.blance,
