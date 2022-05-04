@@ -1,6 +1,4 @@
 {
-	"1": "1",
-	"3": "3",
 	"sms_code_fail": "验证码失效",
 	"phone_exists": "用户已存在",
 	"phone_not_exists": "用户不存在",
@@ -16,5 +14,7 @@
 	"user_ban": "您已被封禁，请联系管理员解封",
 	"blance_not_enough": "余额不足",
 	"triding_done": "租赁成功",
-	"test": "test"
+	"count_not_enough": "今日提现次数已用完，请明日再来",
+  "withdraw_time_error": "当前时间段不能提现，请注意提现时间",
+  "submit_success": "提交成功，请等待客服处理"
 }
