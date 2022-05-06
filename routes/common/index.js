@@ -110,7 +110,7 @@ utils.post('/back', async (req, res) => {
 		// 添加财务明细
 			await recordSchema.create({
 				user: userInfo._id,
-				amount: orderInfo.transferAmount,
+				amount: result.amount,
 				blance: userInfo.blance,
 				description: "用户提现"
 			})

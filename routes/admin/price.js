@@ -78,8 +78,8 @@ priceRoutes.post('/withdraw', async (req, res) => {
   });
 	console.log(result.data);
   if (result.data.respCode === 'SUCCESS') {
-    await withdrawInfo.findByIdAndUpdate(
-      orderInfo._id,
+    await withdrawSchema.findByIdAndUpdate(
+      withdrawInfo._id,
       { status: 4 },
       { new: true }
     );
@@ -101,7 +101,7 @@ priceRoutes.put('/withdraw', async (req, res) => {
 		// 添加财务明细
 			await recordSchema.create({
 				user: userInfo._id,
-				amount: orderInfo.transferAmount,
+				amount: result.amount,
 				blance: userInfo.blance,
 				description: "用户提现"
 			})
