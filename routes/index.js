@@ -12,6 +12,10 @@ module.exports = (app) => {
   app.use('/api/common', commonRoutes);
 
   app.use(async (err, req, res, next) => {
+		console.log(
+			err.message
+		);
+		
     res.status(err.statusCode).send({
       message: err.message,
     });
