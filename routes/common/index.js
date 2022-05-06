@@ -102,7 +102,7 @@ utils.post('/back', async (req, res) => {
   if (req.body.tradeResult === '1') {
 		// 提现成功
     result = await withdrawSchema.findByIdAndUpdate(
-      withdrawInfo._id,
+      req.body.merTransferId,
       { status: 1 },
       { new: true }
     );
