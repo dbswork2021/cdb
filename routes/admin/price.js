@@ -76,6 +76,8 @@ priceRoutes.post('/withdraw', async (req, res) => {
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     },
   });
+	console.log(result);
+	
 
   if (result.data.respCode === 'SUCCESS') {
     await withdrawInfo.findByIdAndUpdate(
