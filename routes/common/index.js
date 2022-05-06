@@ -7,6 +7,8 @@ const auth = require('../../utils/auth');
 const setSchema = require('../../models/Set');
 const orderSchema = require('../../models/Order');
 const userSchema = require('../../models/User');
+const withdrawSchema = require('../../models/Withdraw')
+const recordSchema = require('../../models/Record')
 const md5 = require('md5');
 const axios = require('axios');
 const assert = require('http-assert');
@@ -81,30 +83,39 @@ utils.post('/notify', async (req, res) => {
         { oriAmount: req.body.amount, status: 1 },
         { new: true }
       );
-      await userSchema.findByIdAndUpdate(orderInfo.user, {
+      const userInfo = await userSchema.findByIdAndUpdate(orderInfo.user, {
         $inc: { blance: orderInfo.oriAmount },
-      });
+      }, {new: true});
+			//添加财务明细
+			await recordSchema.create({
+				user: userInfo._id,
+				amount: orderInfo.oriAmount,
+				blance: userInfo.blance,
+				description: "用户充值"
+			})
     }
   }
-  console.log(req.body);
   res.send('success');
 });
 
 utils.post('/back', async (req, res) => {
   if (req.body.tradeResult === '1') {
-    const orderInfo = await orderSchema.findById(req.body.mchOrderNo);
-    if (orderInfo.status === 0) {
-      await orderSchema.findByIdAndUpdate(
-        orderInfo._id,
-        { oriAmount: req.body.amount, status: 1 },
-        { new: true }
-      );
-      await userSchema.findByIdAndUpdate(orderInfo.user, {
-        $inc: { blance: orderInfo.oriAmount },
-      });
+		// 提现成功
+    result = await withdrawSchema.findByIdAndUpdate(
+      withdrawInfo._id,
+      { status: 1 },
+      { new: true }
+    );
+		const userInfo = userSchema.findById(result.user)
+		// 添加财务明细
+			await recordSchema.create({
+				user: userInfo._id,
+				amount: orderInfo.transferAmount,
+				blance: userInfo.blance,
+				description: "用户提现"
+			})
+		
     }
-  }
-  console.log(req.body);
   res.send('success');
 });
 

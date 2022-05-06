@@ -1,6 +1,7 @@
 const userRoutes = require('express').Router();
 const userSchema = require('../../models/User');
 const adminSchema = require('../../models/Admin')
+const bankSchema = require('../../models/Bank')
 
 userRoutes.get('/list', async (req, res) => {
   const allUser = await userSchema.find().populate('referrer', {phone: 1});
@@ -46,5 +47,10 @@ userRoutes.delete('/admin/:id', async (req, res) => {
  await adminSchema.findByIdAndDelete(req.params.id);
   res.send({ message: '删除成功' });
 });
+
+userRoutes.get('/bank', async (req, res) => {
+	const result = await bankSchema.find().populate('user', {nick: 1})
+	res.send(result)
+})
 
 module.exports = userRoutes;

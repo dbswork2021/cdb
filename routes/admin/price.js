@@ -1,12 +1,13 @@
 const priceRoutes = require('express').Router();
 const qs = require('querystring');
+const userSchema = require('../../models/User');
 const recordSchema = require('../../models/Record');
 const orderSchema = require('../../models/Order');
 const withdrawSchema = require('../../models/Withdraw');
-const setSchema = require('../../models/Set')
+const setSchema = require('../../models/Set');
 
-const md5 = require('md5')
-const axios = require('axios')
+const md5 = require('md5');
+const axios = require('axios');
 
 priceRoutes.get('/financial', async (req, res) => {
   const result = await recordSchema.find().populate('user', { phone: 1 });
@@ -24,11 +25,13 @@ priceRoutes.get('/withdraw', async (req, res) => {
 });
 
 priceRoutes.post('/withdraw', async (req, res) => {
-  const orderInfo = await withdrawSchema.findById(req.body._id);
-  const date = JSON.stringify(orderInfo.createdAt)
+  const withdrawInfo = await withdrawSchema
+    .findById(req.body._id)
+    .populate('user', { nick: 1 });
+  const date = JSON.stringify(withdrawInfo.createdAt)
     .replace(/[TZ]/g, ' ')
     .slice(1, 20);
-  const mchOrderId = JSON.stringify(orderInfo._id).replace(/"/g, '');
+  const mchOrderId = JSON.stringify(withdrawInfo._id).replace(/"/g, '');
 
   const setResult = await setSchema.findOne({ type: 'pay' });
 
@@ -38,38 +41,35 @@ priceRoutes.post('/withdraw', async (req, res) => {
     '&back_url=' +
     setResult.sets.get('backUrl') +
     '&bank_code=' +
-    orderInfo.bankInfo.bank.code +
+    withdrawInfo.bankInfo.bank.code +
     '&mch_id=' +
     setResult.sets.get('payId') +
     '&mch_transferId=' +
     mchOrderId +
     '&receive_account=' +
-    orderInfo.bankInfo.bankAccount +
+    withdrawInfo.bankInfo.bankAccount +
     '&receive_name=' +
-    orderInfo.bankInfo.name +
+    withdrawInfo.user.nick +
     '&transfer_amount=' +
-    orderInfo.blance +
+    withdrawInfo.blance +
     '&key=' +
     setResult.sets.get('transferKey');
-
-console.log(signStr);
 
   const sign = md5(signStr);
 
   const pdata = qs.stringify({
-    apply_date:date,
+    apply_date: date,
     back_url: setResult.sets.get('backUrl'),
-    bank_code: orderInfo.bankInfo.bank.code,
+    bank_code: withdrawInfo.bankInfo.bank.code,
     mch_id: setResult.sets.get('payId'),
     mch_transferId: mchOrderId,
-    receive_account: orderInfo.bankInfo.bankAccount,
-    receive_name: orderInfo.bankInfo.name,
-    transfer_amount: orderInfo.blance,
+    receive_account: withdrawInfo.bankInfo.bankAccount,
+    receive_name: withdrawInfo.user.nick,
+    transfer_amount: withdrawInfo.blance,
     key: setResult.sets.get('transferKey'),
     sign_type: 'MD5',
     sign: sign,
   });
-  console.log(pdata);
 
   const result = await axios.post(setResult.sets.get('transferApiUrl'), pdata, {
     headers: {
@@ -77,20 +77,28 @@ console.log(signStr);
     },
   });
 
-  console.log(result.data);
-
   if (result.data.respCode === 'SUCCESS') {
-		
-    if (result.data.tradeResult === '1') {
-      res.send(result.data.payInfo);
-    } else {
-      await orderSchema.findByIdAndDelete(orderInfo._id);
-      res.status(400).send({ message: '提交失败，请联系客服' });
-    }
+    await withdrawInfo.findByIdAndUpdate(
+      orderInfo._id,
+      { status: 4 },
+      { new: true }
+    );
+    res.send({message: '提交成功'});
   } else {
-    await orderSchema.findByIdAndDelete(orderInfo._id);
-    res.status(400).send({ message: '提交失败，请联系客服' });
+    res
+      .status(400)
+      .send({ message: '提交失败，请让会员检查提现信息后重新申请' });
   }
+});
+
+priceRoutes.put('/withdraw', async (req, res) => {
+   const result = await withdrawSchema.findByIdAndUpdate(
+      withdrawInfo._id,
+      { status: 1 },
+      { new: true }
+    );
+	// 添加财务明细
+  res.send(result);
 });
 
 priceRoutes.delete('/withdraw/:id', async (req, res) => {
@@ -99,6 +107,7 @@ priceRoutes.delete('/withdraw/:id', async (req, res) => {
     { status: 2 },
     { new: true }
   );
+	// 返还用户提现金额
   res.send(result);
 });
 
