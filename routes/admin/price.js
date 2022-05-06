@@ -76,9 +76,7 @@ priceRoutes.post('/withdraw', async (req, res) => {
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8',
     },
   });
-	console.log(result);
-	
-
+	console.log(result.data);
   if (result.data.respCode === 'SUCCESS') {
     await withdrawInfo.findByIdAndUpdate(
       orderInfo._id,
@@ -95,11 +93,19 @@ priceRoutes.post('/withdraw', async (req, res) => {
 
 priceRoutes.put('/withdraw', async (req, res) => {
    const result = await withdrawSchema.findByIdAndUpdate(
-      withdrawInfo._id,
+      req.body._id,
       { status: 1 },
       { new: true }
     );
-	// 添加财务明细
+		const userInfo = userSchema.findById(result.user)
+		// 添加财务明细
+			await recordSchema.create({
+				user: userInfo._id,
+				amount: orderInfo.transferAmount,
+				blance: userInfo.blance,
+				description: "用户提现"
+			})
+	
   res.send(result);
 });
 
@@ -110,6 +116,7 @@ priceRoutes.delete('/withdraw/:id', async (req, res) => {
     { new: true }
   );
 	// 返还用户提现金额
+	await userSchema.findByIdAndUpdate(result.user._id, {$inc: {blance: result.amount}})
   res.send(result);
 });
 
