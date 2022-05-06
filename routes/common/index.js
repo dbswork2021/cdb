@@ -106,14 +106,11 @@ utils.post('/back', async (req, res) => {
       { status: 1 },
       { new: true }
     );
-		console.log(result);
-		
-		console.log(result.user);
 		const userInfo = await userSchema.findById(result.user)
 		// 添加财务明细
 			await recordSchema.create({
 				user: userInfo._id,
-				amount: result.amount,
+				amount: -result.amount,
 				blance: userInfo.blance,
 				description: "用户提现"
 			})

@@ -137,7 +137,7 @@ orderRoutes.post('/withdraw', async (req, res) => {
 	// 添加提现数据
   const fees = req.body.amount * (withdrawSets.sets.get('fees') / 100);
 	// 扣除提现金额
-	await userSchema.findByIdAndUpdate(req.user.id, {$inc: {blance: -req.body.amount}})
+	await userSchema.findByIdAndUpdate(req.user.id, {$inc: {blance: -req.body.amount, withdraw: req.body.amount, withdrawCount: 1}})
 	
   await withdrawSchema.create({
     user: req.user.id,

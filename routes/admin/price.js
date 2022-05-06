@@ -115,8 +115,8 @@ priceRoutes.delete('/withdraw/:id', async (req, res) => {
     { status: 2 },
     { new: true }
   );
-	// 返还用户提现金额
-	await userSchema.findByIdAndUpdate(result.user._id, {$inc: {blance: result.amount}})
+	// 返还用户提现金额, 扣除已提现金额，扣除提现次数
+	await userSchema.findByIdAndUpdate(result.user._id, {$inc: {blance: result.amount, withdraw: -result.amount, }})
   res.send(result);
 });
 
