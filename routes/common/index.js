@@ -106,7 +106,7 @@ utils.post('/back', async (req, res) => {
       { status: 1 },
       { new: true }
     );
-		console.log(resutl.user);
+		console.log(result.user);
 		const userInfo = await userSchema.findById(result.user)
 		// 添加财务明细
 			await recordSchema.create({
