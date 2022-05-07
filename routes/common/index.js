@@ -1,19 +1,25 @@
+const utils = require('express').Router();
+
 const multer = require('multer');
 const upload = multer({ dest: 'public/uploads/' });
+
 const svgCaptcha = require('svg-captcha');
+
 const jwt = require('jsonwebtoken');
 const { SECRET } = require('../../config');
 const auth = require('../../utils/auth');
+
 const setSchema = require('../../models/Set');
-const orderSchema = require('../../models/Order');
+const rechargeSchema = require('../../models/Recharge');
+const withdrawSchema = require('../../models/Withdraw');
+const financeSchema = require('../../models/Finance');
+const walletSchema = require('../../models/Wallet');
 const userSchema = require('../../models/User');
-const withdrawSchema = require('../../models/Withdraw')
-const recordSchema = require('../../models/Record')
+const infoSchema = require('../../models/Info')
+
 const md5 = require('md5');
 const axios = require('axios');
 const assert = require('http-assert');
-
-const utils = require('express').Router();
 
 utils.get('/captcha', (req, res) => {
   var captcha = svgCaptcha.create();
@@ -76,23 +82,47 @@ utils.post('/uploads', auth, upload.single('file'), async (req, res) => {
 
 utils.post('/notify', async (req, res) => {
   if (req.body.tradeResult === '1') {
-    const orderInfo = await orderSchema.findById(req.body.mchOrderNo);
-    if (orderInfo.status === 0) {
-      await orderSchema.findByIdAndUpdate(
-        orderInfo._id,
+    // 查找充值记录
+    const rechargeInfo = await rechargeSchema.findById(req.body.mchOrderNo);
+    if (rechargeInfo.status === 0) {
+      // 更新充值记录状态
+      await rechargeSchema.findByIdAndUpdate(
+        rechargeInfo._id,
         { oriAmount: req.body.amount, status: 1 },
         { new: true }
       );
-      const userInfo = await userSchema.findByIdAndUpdate(orderInfo.user, {
-        $inc: { blance: orderInfo.oriAmount },
-      }, {new: true});
-			//添加财务明细
-			await recordSchema.create({
-				user: userInfo._id,
-				amount: orderInfo.oriAmount,
-				blance: userInfo.blance,
-				description: "用户充值"
-			})
+      // 更新钱包
+      const walletInfo = await wall.findOneAndUpdate(
+        { user: rechargeInfo.user },
+        {
+          $inc: { blance: rechargeInfo.oriAmount },
+        },
+        { new: true }
+      );
+      // 更新财务明细
+      await financeSchema.findByIdAndUpdate(rechargeInfo.finance, {
+        amount: rechargeInfo.oriAmount,
+        blance: walletInfo.blance,
+        status: 1,
+      });
+      // 添加统计信息
+      // 获取当前时间戳
+      const currentDay = new Date(new Date().setHours(0, 0, 0, 0)) / 1000;
+      const rechargeStats = await infoSchema.findOne({
+        date: currentDay,
+        type: 'recharge',
+      });
+      if (rechargeStats) {
+        await infoSchema.findByIdAndUpdate(rechargeStats._id, {
+          $inc: { value: rechargeInfo.oriAmount },
+        });
+      } else {
+        await infoSchema.create({
+          type: 'recharge',
+          value: rechargeInfo.oriAmount,
+          date: currentDay,
+        });
+      }
     }
   }
   res.send('success');
@@ -100,22 +130,31 @@ utils.post('/notify', async (req, res) => {
 
 utils.post('/back', async (req, res) => {
   if (req.body.tradeResult === '1') {
-		// 提现成功
-    result = await withdrawSchema.findByIdAndUpdate(
+    // 更新提现记录状态
+    const withdrawInfo = await withdrawSchema.findByIdAndUpdate(
       req.body.merTransferId,
       { status: 1 },
       { new: true }
     );
-		const userInfo = await userSchema.findById(result.user)
-		// 添加财务明细
-			await recordSchema.create({
-				user: userInfo._id,
-				amount: -result.amount,
-				blance: userInfo.blance,
-				description: "用户提现"
-			})
-		
+    // 更新财务明细
+    await financeSchema.findByIdAndUpdate(withdrawInfo.finance, {
+      status: 1,
+    });
+    // 添加统计信息
+    // 获取当前时间戳
+    const currentDay = new Date(new Date().setHours(0, 0, 0, 0)) / 1000;
+    const withdrawStats = await infoSchema.findOne({
+      date: currentDay,
+      type: 'withdraw',
+    });
+    if (withdrawStats) {
+      await infoSchema.findByIdAndUpdate(withdrawStats._id, {
+        $inc: { value: req.body.transferAmount },
+      });
+    } else {
+      await infoSchema.create({ type: 'withdraw', value: req.body.transferAmount, date: currentDay });
     }
+  }
   res.send('success');
 });
 

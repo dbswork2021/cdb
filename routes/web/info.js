@@ -1,7 +1,6 @@
 const infoRoutes = require('express').Router();
 const postSchema = require('../../models/Post');
-const aboutSchema = require('../../models/About');
-const shareSchema = require('../../models/Share');
+const setSchema = require('../../models/Set');
 
 infoRoutes.get('/post', async (req, res) => {
   const result = await postSchema.find();
@@ -16,12 +15,12 @@ infoRoutes.delete('/post/:id', async (req, res) => {
 });
 
 infoRoutes.get('/about', async (req, res) => {
-  const result = await aboutSchema.findOne();
+  const result = await setSchema.findOne({type: 'about'});
   res.send(result);
 });
 
 infoRoutes.get('/share', async (req, res) => {
-  const result = await shareSchema.findOne();
+  const result = await setSchema.findOne({type: 'share'});
   res.send(result);
 });
 

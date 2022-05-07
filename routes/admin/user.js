@@ -1,14 +1,16 @@
 const userRoutes = require('express').Router();
 const userSchema = require('../../models/User');
-const adminSchema = require('../../models/Admin')
+const walletSchema = require('../../models/Wallet')
 const bankSchema = require('../../models/Bank')
+const adminSchema = require('../../models/Admin')
 
-userRoutes.get('/list', async (req, res) => {
-  const allUser = await userSchema.find().populate('referrer', {phone: 1});
-  res.send(allUser);
+// 获取用户信息
+userRoutes.get('/', async (req, res) => {
+  const userInfo = await userSchema.find().populate('referrer', {phone: 1});
+  res.send(userInfo);
 });
 
-userRoutes.get('/user/:id', async (req, res) => {
+userRoutes.delete('/:id', async (req, res) => {
 	const operateUser = await userSchema.findById(req.params.id)
 	if(operateUser.state === 1){
 		await userSchema.findOneAndUpdate(req.params.id, {state: 0})
@@ -19,9 +21,10 @@ userRoutes.get('/user/:id', async (req, res) => {
 });
 
 userRoutes.post('/user', async (req, res) => {
-	const {id, nick, blance, money = 0} = req.body
+	const {id, blance, money = 0} = req.body
+	const userInfo = await userSchema.findById(id)
+	await walletSchema.findByIdAndUpdate(userInfo.wallet, {$inc: {blance: money}})
 	const result = await userSchema.findByIdAndUpdate(id, {
-			nick,
 			blance: blance + money
 		},{new: true})
 

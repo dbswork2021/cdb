@@ -1,13 +1,12 @@
-const productRoutes = require('express').Router();
+const product = require('express').Router();
 const productSchema = require('../../models/Product');
-const tridingSchema = require('../../models/Triding')
 
-productRoutes.get('/', async (req, res) => {
+product.get('/', async (req, res) => {
   const result = await productSchema.find();
   res.send(result);
 });
 
-productRoutes.post('/', async (req, res) => {
+product.post('/', async (req, res) => {
 	let result = null
 	
   if (req.body.id) {
@@ -18,16 +17,12 @@ productRoutes.post('/', async (req, res) => {
   res.send(result);
 });
 
-productRoutes.delete('/:id', async (req, res) => {
+product.delete('/:id', async (req, res) => {
 	
  await productSchema.findByIdAndDelete(req.params.id);
   res.send({ message: '删除成功' });
 });
 
 
-productRoutes.get('/record', async (req, res) => {
-	const result = await tridingSchema.find().populate('product', {name: 1}).populate('user', {phone: 1})
-	res.send(result)
-})
 
-module.exports = productRoutes;
+module.exports = product;
