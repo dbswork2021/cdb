@@ -34,7 +34,7 @@ public.post(
   '/register',
   async (req, res, next) => {
     // 获取用于传递验证码的token
-    /* const token = req.headers.authorization
+    const token = req.headers.authorization
       ? req.headers.authorization.replace(/^Bearer /, '')
       : null;
     // 判断token是否存在
@@ -46,7 +46,7 @@ public.post(
       assert(false, 422, res.__('verify_not_exist'));
     }
     // 判断token中是否有验证码
-    assert(req.sms, 401, res.__('verify_not_exist')); */
+    assert(req.sms, 401, res.__('verify_not_exist'));
     next();
   },
   async (req, res) => {
@@ -57,7 +57,7 @@ public.post(
       assert(false, 422, res.__('input_error'));
     }
 		// 验证验证码
-    // assert(phoneCode === req.sms.code, 422, res.__('verify_error'));
+    assert(phoneCode === req.sms.code, 422, res.__('verify_error'));
 
 		// 创建会员初始数据
     let userModel = {
